@@ -1,0 +1,26 @@
+html {
+    font-family: 'Comfortaa', cursive;
+}
+
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    margin: 3rem auto;
+    text-align: center;
+    color:#ff6314;
+}
+h3{
+    color:	#5296dd;
+    font-size: 1.4rem;
+    margin: 1.5rem auto;
+    text-align: center;
+}
+
+.UserForm{
+    text-align: center;
+}
+
+.btn {
+    margin: 2rem 10rem ;
+    text-align: center;
+}
