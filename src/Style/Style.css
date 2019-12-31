@@ -20,7 +20,16 @@ h3{
     text-align: center;
 }
 
+.img {
+    height: 32rem;
+    width: 59rem;
+    margin: .5rem auto;
+    text-align: center;
+}
 .btn {
     margin: 2rem 10rem ;
     text-align: center;
+}
+.displayCard {
+    margin: 1rem;
 }

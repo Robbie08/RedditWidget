@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, Form} from 'react-bootstrap';
 
-const API = ""
+const API = "https://www.reddit.com/r/"
 
 class UserForm extends Component {
 
     // state for the URL
     state ={
         subreddit: "aww",
+    }
+
+    post = {
+        postTitle:"",
     }
 
     // this function will fetch the user input and set the state 
@@ -21,8 +25,21 @@ class UserForm extends Component {
 
     // this function will handle the event when the button is clicked
     onFetchedState = async (e) =>{
-        let URL = `${API}${this.state.subreddit}` // concat our URL we want to hit
+        let URL = `${API}${this.state.subreddit}${".json"}` // concat our URL we want to hit
 
+        // fetch data from API by the URL we constructed
+        try {
+            const response = await fetch(URL) // creates a response from the URL
+            const reddit_data = await response.json() // grab the json file of the response
+            console.log(reddit_data)
+        }
+        catch(E) {
+            console.log(E); // output error
+        }
+    }
+
+    async componentDidMount(){
+        this.onFetchedState();
     }
     
 
