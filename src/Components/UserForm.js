@@ -1,47 +1,41 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, Form} from 'react-bootstrap';
+import {withRouter} from 'react-router-dom';
 
 const API = "https://www.reddit.com/r/"
 
 class UserForm extends Component {
 
-    // state for the URL
-    state ={
-        subreddit: "aww",
-    }
-
-    post = {
-        postTitle:"",
+    // this is the object we will pass back to the Main page
+    data_obj = {
+        subreddit: "",
+        url: "",
     }
 
     // this function will fetch the user input and set the state 
     getUserData = (event) => {
         // change the state so that we can add it to the url
         this.setState({
-                subreddit: event.target.value 
+                subreddit: event.target.value,
         }
         );
+    }
+
+    // this function will push route to /DisplayPost
+    nextPath(path) {
+        this.props.history.push(path);
     }
 
     // this function will handle the event when the button is clicked
     onFetchedState = async (e) =>{
         let URL = `${API}${this.state.subreddit}${".json"}` // concat our URL we want to hit
+        let subred = this.state.subreddit
+        
+        this.data_obj.subreddit = subred; // set our objects subreddit value
+        this.data_obj.url = URL;    // set our objects url value
 
-        // fetch data from API by the URL we constructed
-        try {
-            const response = await fetch(URL) // creates a response from the URL
-            const reddit_data = await response.json() // grab the json file of the response
-            console.log(reddit_data)
-        }
-        catch(E) {
-            console.log(E); // output error
-        }
+        this.props.onGrabbedData(this.data_obj) // pass our object back to Main
     }
-
-    async componentDidMount(){
-        this.onFetchedState();
-    }
-    
 
     render(){
         return(
@@ -56,14 +50,14 @@ class UserForm extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Button  onClick={this.onFetchedState} className="btn" variant="primary" size="lg" block>
+                        <Button onClick={this.onFetchedState, () => this.nextPath('/DisplayPost')} className="btn" variant="primary" size="lg" block>
                             Search
                         </Button>
                     </Form.Group>
-                 </Form>
+                </Form>
             </Container>
         )
     }
 }
 
-export default UserForm
+export default withRouter(UserForm);

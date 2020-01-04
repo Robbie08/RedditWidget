@@ -3,13 +3,29 @@ import { Container, Row} from 'react-bootstrap'
 import UserForm from './UserForm'
 import {Route} from 'react-router-dom'
 import DataWall from './DataWall'
+
+
 class Main extends Component {
 
-
-    formatData(props){
-
+    constructor(){
+        super()
+        this.state = {
+            new_url: "",
+            new_subreddit:"",
+        } 
     }
     
+    addData(data_obj){
+        console.log("addData----")
+        console.log(data_obj.url)
+        console.log(data_obj.subreddit)
+
+        this.setState=({
+            new_url: data_obj.url,
+            new_subreddit: data_obj.subreddit
+        })
+    }
+
     render(){
         return(
             <Container>
@@ -19,16 +35,15 @@ class Main extends Component {
                             <Row>
                                 <h3>This widget will grab the top 10 posts from your favorite subreddit</h3>
                             </Row>
-                            <Row><UserForm></UserForm></Row>
+                            <Row><UserForm onGrabbedData={(grabbedData) =>{
+                                this.addData(grabbedData)
+                            }}></UserForm></Row>
                         </Container>
                 )}/>
                 
                 <Route path="/DisplayPost" render={({history}) => (
                         <Container>
-                            <DataWall onFetchedData={(fetchedData) =>{
-                                this.formatData(fetchedData)
-                                history.push('/')
-                            }}/>
+                            <DataWall sub={this.state.new_subreddit}/> {/* mistake here !!!! cant recieve props correctly */}
                         </Container>
                 )}/>
                     
