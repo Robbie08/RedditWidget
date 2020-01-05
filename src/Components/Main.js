@@ -1,29 +1,30 @@
 import React, { Component } from 'react'
 import { Container, Row} from 'react-bootstrap'
 import UserForm from './UserForm'
-import {Route} from 'react-router-dom'
+import {Route, withRouter} from 'react-router-dom'
 import DataWall from './DataWall'
 
+const path = 'DisplayPost';
 
 class Main extends Component {
 
-    constructor(){
-        super()
-        this.state = {
-            new_url: "",
-            new_subreddit:"",
-        } 
+    // object that will be passed to our DataWall
+    reddit_object = {
+        new_url: 'https://www.reddit.com/r/aww',
+        new_subreddit: 'aww',
     }
     
     addData(data_obj){
-        console.log("addData----")
-        console.log(data_obj.url)
-        console.log(data_obj.subreddit)
+        // change the data of our object that we will pass as prop to our DataWall
+        this.reddit_object.new_url =  data_obj.url;
+        this.reddit_object.new_subreddit = data_obj.subreddit;
 
-        this.setState=({
-            new_url: data_obj.url,
-            new_subreddit: data_obj.subreddit
-        })
+        this.nextPath(path); // change the path that will send the user to the nect page
+    }
+
+    // function that handles request to change path
+    nextPath(localPath) {
+        this.props.history.push(localPath);
     }
 
     render(){
@@ -35,15 +36,15 @@ class Main extends Component {
                             <Row>
                                 <h3>This widget will grab the top 10 posts from your favorite subreddit</h3>
                             </Row>
-                            <Row><UserForm onGrabbedData={(grabbedData) =>{
-                                this.addData(grabbedData)
+                            <Row><UserForm handleUserData={(user_input_reddit_obj) =>{
+                                this.addData(user_input_reddit_obj)
                             }}></UserForm></Row>
                         </Container>
                 )}/>
                 
                 <Route path="/DisplayPost" render={({history}) => (
                         <Container>
-                            <DataWall sub={this.state.new_subreddit}/> {/* mistake here !!!! cant recieve props correctly */}
+                            <DataWall redditObject={this.reddit_object}/>
                         </Container>
                 )}/>
                     
@@ -53,4 +54,4 @@ class Main extends Component {
     }
 }
 
-export default Main
+export default withRouter(Main)
